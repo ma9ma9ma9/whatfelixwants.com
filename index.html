@@ -273,8 +273,15 @@
     }
 
     /* ── "I'LL GET THIS" CLAIMS ── */
-    .ruled-line { height: auto; min-height: 1.85rem; gap: 0.5rem; flex-wrap: wrap; }
-    .wish-text { flex: 1 1 auto; min-width: 0; padding-bottom: 1px; }
+    .ruled-line[data-wish] {
+      height: auto; min-height: 2.4rem; gap: 0.6rem; flex-wrap: nowrap;
+      align-items: center; padding: 0.35rem 0; line-height: 1.25;
+    }
+    .wish-text { flex: 1 1 auto; min-width: 0; overflow-wrap: anywhere; }
+    .ruled-line[data-wish] .claim-area { flex: 0 0 auto; padding-bottom: 0; }
+    /* claimed note and name box go on their own line under the wish when space is tight */
+    .ruled-line.is-claimed, .ruled-line.has-form { flex-wrap: wrap; row-gap: 0.25rem; }
+    .ruled-line.is-claimed .claim-area, .ruled-line.has-form .claim-area { margin-left: auto; }
     .ruled-line.is-claimed .wish-text { text-decoration: line-through; text-decoration-thickness: 2px; opacity: 0.5; }
     .claim-area { margin-left: auto; display: inline-flex; align-items: center; gap: 0.35rem; font-family: 'Patrick Hand', cursive; font-size: 0.95rem; line-height: 1.2; padding-bottom: 2px; }
     .claim-btn, .claim-save, .claim-cancel, .claim-undo {
@@ -299,6 +306,22 @@
     }
     .claim-help.is-error { color: #b3122c; }
     .claim-help b { font-weight: normal; color: #b3122c; }
+
+    /* ── PHONES ── */
+    @media (max-width: 520px) {
+      body { padding: 10px; }
+      body::before { padding: 10px; }
+      .inner { padding: 1.1rem 0.85rem 1.2rem; min-height: calc(100vh - 20px); }
+      h1 { font-size: clamp(1.35rem, 7.4vw, 2rem); margin-bottom: 1rem; }
+      .name-row { font-size: 1.05rem; margin-bottom: 1.1rem; justify-content: center; }
+      .uval { min-width: 64px; }
+      .claim-help { font-size: 1rem; margin: -0.2rem 0 1.1rem; }
+      .gift-body { padding: 0.25rem 0.6rem 0.4rem; }
+      .ruled-line[data-wish] { font-size: 1.05rem; gap: 0.5rem; }
+      .claim-btn { padding: 0.15rem 0.6rem; font-size: 0.92rem; }
+      .claim-tag { white-space: normal; text-align: right; }
+      .claim-input { width: 8.5rem; }
+    }
   </style>
 </head>
 <body>
@@ -486,6 +509,7 @@ const CLAIMS_API = "https://script.google.com/macros/s/AKfycbxdwDmcWBVRZTg6sfA-D
       area.replaceChildren();
       const c = claims && claims[id];
       el.classList.toggle('is-claimed', !!c);
+      el.classList.toggle('has-form', !c && claims !== null && openForm === id);
 
       if (claims === null) {
         const w = document.createElement('span'); w.className = 'claim-wait'; w.textContent = '…';
