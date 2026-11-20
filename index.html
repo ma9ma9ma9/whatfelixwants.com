@@ -307,6 +307,43 @@
     .claim-help.is-error { color: #b3122c; }
     .claim-help b { font-weight: normal; color: #b3122c; }
 
+    /* ── WISH CARDS ── */
+    .gift-body:has(.wish-grid) { padding: 0.9rem 0.8rem 1rem; }
+    .wish-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem 0.8rem; }
+    @media (min-width: 600px) { .wish-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.3rem 1rem; } }
+    @media (min-width: 900px) { .wish-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+    @media (min-width: 1250px) { .wish-grid { grid-template-columns: repeat(5, minmax(0, 1fr)); } }
+    .wish { display: flex; flex-direction: column; gap: 0.4rem; min-width: 0; }
+    .wish-pic {
+      position: relative; display: flex; align-items: center; justify-content: center;
+      aspect-ratio: 1 / 1; background: #fff; border: 2px solid var(--ink); border-radius: 16px;
+      overflow: hidden; box-shadow: 2px 3px 0 rgba(31, 81, 50, 0.15);
+    }
+    .wish-pic img { width: 100%; height: 100%; object-fit: contain; padding: 7%; display: block; }
+    .wish-pic img.is-photo { object-fit: cover; padding: 0; }
+    .wish-pic.is-drawn { background: #fbf3e6; }
+    .wish-pic.is-drawn svg { width: 46%; height: 46%; }
+    .wish-text {
+      font-family: 'Schoolbell', cursive; font-size: 1rem; line-height: 1.25; color: var(--ink);
+      display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
+      overflow-wrap: anywhere;
+    }
+    .wish-text a { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 2px; }
+    .wish .claim-area { margin: auto 0 0; display: block; padding: 0; }
+    .wish .claim-btn { width: 100%; padding: 0.25rem 0.5rem; }
+    .wish .claim-tag { display: block; white-space: normal; line-height: 1.25; font-size: 0.92rem; text-align: center !important; }
+    .wish .claim-undo { padding: 0; }
+    .wish form.claim-area { display: flex; flex-wrap: wrap; gap: 0.35rem 0.5rem; align-items: center; }
+    .wish .claim-input { width: 100%; max-width: none; }
+    .wish .claim-wait { display: block; text-align: center; }
+    .wish.is-claimed .wish-text { text-decoration: line-through; text-decoration-thickness: 2px; opacity: 0.55; }
+    .wish.is-claimed .wish-pic img, .wish.is-claimed .wish-pic svg { opacity: 0.4; filter: grayscale(0.6); }
+    .wish.is-claimed .wish-pic::after {
+      content: '✓ Taken'; position: absolute; top: 10px; right: -30px; transform: rotate(35deg);
+      background: #c8102e; color: #fdf8f0; font-family: 'Schoolbell', cursive; font-size: 0.85rem;
+      padding: 0.15rem 2.2rem; box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    }
+
     /* ── PHONES ── */
     @media (max-width: 520px) {
       body { padding: 10px; }
@@ -318,6 +355,8 @@
       .claim-help { font-size: 1rem; margin: -0.2rem 0 1.1rem; }
       .gift-body { padding: 0.25rem 0.6rem 0.4rem; }
       .ruled-line[data-wish] { font-size: 1.05rem; gap: 0.5rem; }
+      .gift-body:has(.wish-grid) { padding: 0.75rem 0.6rem 0.85rem; }
+      .wish-text { font-size: 0.95rem; }
       .claim-btn { padding: 0.15rem 0.6rem; font-size: 0.92rem; }
       .claim-tag { white-space: normal; text-align: right; }
       .claim-input { width: 8.5rem; }
@@ -426,9 +465,9 @@
 
     <p class="claim-help" id="claim-help" hidden>Buying something? Tap <b>I'll get this</b> so nobody else buys it too. Bought items are crossed out.</p>
 
-    <!-- GIFT CARDS
-         To add a wish, fill an empty line and give it a unique data-wish name, e.g.
-         <div class="ruled-line" data-wish="want-play-kitchen"><a href="https://..." target="_blank" style="color:var(--ink);text-decoration:underline;">Play kitchen</a></div>
+    <!-- WISHES
+         To add a wish, copy one <div class="wish"> block inside .wish-grid, give it a new unique
+         data-wish name, change the links and name, and put a photo at images/wishes/<data-wish>.jpg.
          Keep the data-wish name the same once people start marking things as bought. -->
     <div class="gifts-grid">
 
@@ -436,35 +475,121 @@
         <div class="gift-card">
           <div class="gift-label">My Christmas Wishes</div>
           <div class="gift-body">
-            <div class="ruled-line" data-wish="piccalio-toddler-tower"><a href="https://piccalio.com/products/convertible-toddler-tower?variant=42126473134307" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Piccalio Convertible Toddler Tower (Birch)</a></div>
-            <div class="ruled-line" data-wish="piccalio-mini-cutter"><a href="https://piccalio.com/products/mini-cutter-wooden-knife-for-children" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Piccalio Mini Cutter (wooden kids' knife)</a></div>
-            <div class="ruled-line" data-wish="magna-tiles-74"><a href="https://www.target.com/p/magna-tiles-clear-colors-74pc-set/-/A-15536894" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Magna-Tiles Clear Colors 74-Piece Set</a></div>
-            <div class="ruled-line" data-wish="duplo-10443-airport"><a href="https://www.amazon.com/dp/B0DRW57CTN" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">LEGO DUPLO First Time at the Airport (10443)</a></div>
-            <div class="ruled-line" data-wish="books-airplanes">Books about airplanes</div>
-            <div class="ruled-line" data-wish="appleround-sports-balls"><a href="https://www.amazon.com/dp/B00Y8EGGXE" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">AppleRound toddler sports balls</a></div>
-            <div class="ruled-line" data-wish="play-doh-starter-set"><a href="https://www.amazon.com/dp/B00TPMDNSU" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Play-Doh Starter Set</a></div>
-            <div class="ruled-line" data-wish="book-dear-zoo"><a href="https://www.target.com/p/dear-zoo-25-years-anniversary-edition-board-book-by-rod-campbell/-/A-11735185" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Dear Zoo (board book)</a></div>
-            <div class="ruled-line" data-wish="ball-crocodile-creek"><a href="https://www.amazon.com/dp/B0DHT9F89N" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Crocodile Creek playground ball (5&quot;, jungle)</a></div>
-            <div class="ruled-line" data-wish="garden-tool-set"><a href="https://www.amazon.com/dp/B0B2Q6TDMZ" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Kids' metal garden tool set (4 pieces)</a></div>
-            <div class="ruled-line" data-wish="ikea-duktig-kitchen"><a href="https://www.ikea.com/us/en/p/duktig-play-kitchen-birch-60319972/" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">IKEA DUKTIG play kitchen (birch)</a></div>
-            <div class="ruled-line" data-wish="inkzoo-flex-tracks"><a href="https://www.amazon.com/dp/B0F8H5RMCZ" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">INKZOO Flex Tracks race track set</a></div>
-            <div class="ruled-line" data-wish="book-brown-bear"><a href="https://www.target.com/p/brown-bear-brown-bear-what-do-you-see-stamped-edges-special-edition-board-book/-/A-1006354392" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Brown Bear, Brown Bear, What Do You See? (board book)</a></div>
-            <div class="ruled-line" data-wish="ball-champion-red"><a href="https://www.amazon.com/dp/B0FCDD5CQL" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Champion Sports playground ball (5&quot;, red)</a></div>
-            <div class="ruled-line" data-wish="crinkle-cutter"><a href="https://www.amazon.com/dp/B001UANLM8" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Crinkle cutter / French fry slicer</a></div>
-            <div class="ruled-line" data-wish="zara-fruit-veg-set"><a href="https://www.zarahome.com/us/kids-fruit-and-vegetable-toy-set-l42696052" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Zara Home kids' fruit &amp; vegetable toy set</a></div>
-            <div class="ruled-line" data-wish="planetbox-rover"><a href="https://www.amazon.com/dp/B0BG6BM2QC" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">PlanetBox Rover bento box (camo shark)</a></div>
-            <div class="ruled-line" data-wish="book-little-blue-truck"><a href="https://www.target.com/p/little-blue-truck-p-c-by-alice-schertle-board-book/-/A-79856222" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Little Blue Truck (board book)</a></div>
-            <div class="ruled-line" data-wish="mini-broom-dustpan"><a href="https://www.amazon.com/dp/B0BMPNG9ST" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Mini broom &amp; dustpan set (light blue)</a></div>
-            <div class="ruled-line" data-wish="duktig-decals-floral"><a href="https://www.etsy.com/listing/1449260678/ikea-duktig-play-kitchen-in-70s-floral" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">DUKTIG kitchen decals, 70's floral (Etsy)</a></div>
-            <div class="ruled-line" data-wish="zara-vet-case"><a href="https://www.zarahome.com/us/kids-veterinarian-case-l44617052" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Zara Home kids' veterinarian case</a></div>
-            <div class="ruled-line" data-wish="vevor-sensory-table"><a href="https://www.target.com/p/vevor-sensory-table-for-toddlers-kids-activity-table-with-3-foldable-storage-bins-paper-roll-holder-indoor-outdoor-play-sand-and-water-table/-/A-1003877936" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">VEVOR sand &amp; water sensory table</a></div>
-            <div class="ruled-line" data-wish="yeti-rambler-jr"><a href="https://www.amazon.com/dp/B07VKBSB4P" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">YETI Rambler Jr. 12 oz kids' bottle (red)</a></div>
-            <div class="ruled-line" data-wish="tappi-starter-set"><a href="https://tappiplay.com/products/tappi-starter-set" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Tappi Starter Set (3 books + reading pen)</a></div>
-            <div class="ruled-line" data-wish="watering-can"><a href="https://www.amazon.com/dp/B0H11QLDQH" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Small metal watering can (green)</a></div>
-            <div class="ruled-line" data-wish="duktig-stickers-sage"><a href="https://www.etsy.com/listing/4391253786/sage-green-duktig-kitchen-sticker-set" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">DUKTIG kitchen stickers, sage green (Etsy)</a></div>
-            <div class="ruled-line" data-wish="mini-tongs"><a href="https://www.amazon.com/dp/B08NJ798TX" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Mini serving tongs (3 pack)</a></div>
-            <div class="ruled-line" data-wish="toddla-switch-board"><a href="https://www.toddla.co/products/toddla-montessori-switch-board" target="_blank" rel="noopener" style="color:var(--ink);text-decoration:underline;">Toddla Montessori switch board</a></div>
+          <div class="wish-grid">
+            <div class="wish" data-wish="piccalio-toddler-tower">
+              <a class="wish-pic" href="https://piccalio.com/products/convertible-toddler-tower?variant=42126473134307" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img class="is-photo" src="images/wishes/piccalio-toddler-tower.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://piccalio.com/products/convertible-toddler-tower?variant=42126473134307" target="_blank" rel="noopener">Piccalio Convertible Toddler Tower (Birch)</a></div>
+            </div>
+            <div class="wish" data-wish="piccalio-mini-cutter">
+              <a class="wish-pic" href="https://piccalio.com/products/mini-cutter-wooden-knife-for-children" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img class="is-photo" src="images/wishes/piccalio-mini-cutter.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://piccalio.com/products/mini-cutter-wooden-knife-for-children" target="_blank" rel="noopener">Piccalio Mini Cutter (wooden kids' knife)</a></div>
+            </div>
+            <div class="wish" data-wish="magna-tiles-74">
+              <a class="wish-pic" href="https://www.target.com/p/magna-tiles-clear-colors-74pc-set/-/A-15536894" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/magna-tiles-74.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.target.com/p/magna-tiles-clear-colors-74pc-set/-/A-15536894" target="_blank" rel="noopener">Magna-Tiles Clear Colors 74-Piece Set</a></div>
+            </div>
+            <div class="wish" data-wish="duplo-10443-airport">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0DRW57CTN" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/duplo-10443-airport.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0DRW57CTN" target="_blank" rel="noopener">LEGO DUPLO First Time at the Airport (10443)</a></div>
+            </div>
+            <div class="wish" data-wish="books-airplanes">
+              <div class="wish-pic is-drawn"><svg viewBox="0 0 64 64" aria-hidden="true"><path d="M6 36l14-2 10-14h7l-5 13 16-2 6-7h5l-3 11 3 11h-5l-6-7-16-2 5 13h-7L20 38 6 36z" fill="#7cb9e8" stroke="#1f5132" stroke-width="2.2" stroke-linejoin="round"/><rect x="14" y="46" width="20" height="12" rx="1.5" fill="#c8102e" stroke="#1f5132" stroke-width="2"/><path d="M24 46v12" stroke="#1f5132" stroke-width="1.6"/><rect x="36" y="48" width="18" height="10" rx="1.5" fill="#e0b23a" stroke="#1f5132" stroke-width="2"/></svg></div>
+              <div class="wish-text">Books about airplanes</div>
+            </div>
+            <div class="wish" data-wish="appleround-sports-balls">
+              <a class="wish-pic is-drawn" href="https://www.amazon.com/dp/B00Y8EGGXE" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26" width="44" height="30" rx="3" fill="#fdf8f0" stroke="#1f5132" stroke-width="2.5"/><rect x="7" y="18" width="50" height="10" rx="2" fill="#c8102e" stroke="#1f5132" stroke-width="2.5"/><rect x="28" y="18" width="8" height="38" fill="#2e7d4f"/><path d="M32 18c-4-9-15-10-14-3 1 4 9 3 14 3zM32 18c4-9 15-10 14-3-1 4-9 3-14 3z" fill="#e0b23a" stroke="#1f5132" stroke-width="2"/></svg></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B00Y8EGGXE" target="_blank" rel="noopener">AppleRound toddler sports balls</a></div>
+            </div>
+            <div class="wish" data-wish="play-doh-starter-set">
+              <a class="wish-pic is-drawn" href="https://www.amazon.com/dp/B00TPMDNSU" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26" width="44" height="30" rx="3" fill="#fdf8f0" stroke="#1f5132" stroke-width="2.5"/><rect x="7" y="18" width="50" height="10" rx="2" fill="#c8102e" stroke="#1f5132" stroke-width="2.5"/><rect x="28" y="18" width="8" height="38" fill="#2e7d4f"/><path d="M32 18c-4-9-15-10-14-3 1 4 9 3 14 3zM32 18c4-9 15-10 14-3-1 4-9 3-14 3z" fill="#e0b23a" stroke="#1f5132" stroke-width="2"/></svg></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B00TPMDNSU" target="_blank" rel="noopener">Play-Doh Starter Set</a></div>
+            </div>
+            <div class="wish" data-wish="book-dear-zoo">
+              <a class="wish-pic" href="https://www.target.com/p/dear-zoo-25-years-anniversary-edition-board-book-by-rod-campbell/-/A-11735185" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/book-dear-zoo.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.target.com/p/dear-zoo-25-years-anniversary-edition-board-book-by-rod-campbell/-/A-11735185" target="_blank" rel="noopener">Dear Zoo (board book)</a></div>
+            </div>
+            <div class="wish" data-wish="ball-crocodile-creek">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0DHT9F89N" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/ball-crocodile-creek.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0DHT9F89N" target="_blank" rel="noopener">Crocodile Creek playground ball (5&quot;, jungle)</a></div>
+            </div>
+            <div class="wish" data-wish="garden-tool-set">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0B2Q6TDMZ" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/garden-tool-set.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0B2Q6TDMZ" target="_blank" rel="noopener">Kids' metal garden tool set (4 pieces)</a></div>
+            </div>
+            <div class="wish" data-wish="ikea-duktig-kitchen">
+              <a class="wish-pic" href="https://www.ikea.com/us/en/p/duktig-play-kitchen-birch-60319972/" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/ikea-duktig-kitchen.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.ikea.com/us/en/p/duktig-play-kitchen-birch-60319972/" target="_blank" rel="noopener">IKEA DUKTIG play kitchen (birch)</a></div>
+            </div>
+            <div class="wish" data-wish="inkzoo-flex-tracks">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0F8H5RMCZ" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/inkzoo-flex-tracks.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0F8H5RMCZ" target="_blank" rel="noopener">INKZOO Flex Tracks race track set</a></div>
+            </div>
+            <div class="wish" data-wish="book-brown-bear">
+              <a class="wish-pic" href="https://www.target.com/p/brown-bear-brown-bear-what-do-you-see-stamped-edges-special-edition-board-book/-/A-1006354392" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/book-brown-bear.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.target.com/p/brown-bear-brown-bear-what-do-you-see-stamped-edges-special-edition-board-book/-/A-1006354392" target="_blank" rel="noopener">Brown Bear, Brown Bear, What Do You See? (board book)</a></div>
+            </div>
+            <div class="wish" data-wish="ball-champion-red">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0FCDD5CQL" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/ball-champion-red.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0FCDD5CQL" target="_blank" rel="noopener">Champion Sports playground ball (5&quot;, red)</a></div>
+            </div>
+            <div class="wish" data-wish="crinkle-cutter">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B001UANLM8" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/crinkle-cutter.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B001UANLM8" target="_blank" rel="noopener">Crinkle cutter / French fry slicer</a></div>
+            </div>
+            <div class="wish" data-wish="zara-fruit-veg-set">
+              <a class="wish-pic" href="https://www.zarahome.com/us/kids-fruit-and-vegetable-toy-set-l42696052" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/zara-fruit-veg-set.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.zarahome.com/us/kids-fruit-and-vegetable-toy-set-l42696052" target="_blank" rel="noopener">Zara Home kids' fruit &amp; vegetable toy set</a></div>
+            </div>
+            <div class="wish" data-wish="planetbox-rover">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0BG6BM2QC" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/planetbox-rover.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0BG6BM2QC" target="_blank" rel="noopener">PlanetBox Rover bento box (camo shark)</a></div>
+            </div>
+            <div class="wish" data-wish="book-little-blue-truck">
+              <a class="wish-pic" href="https://www.target.com/p/little-blue-truck-p-c-by-alice-schertle-board-book/-/A-79856222" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/book-little-blue-truck.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.target.com/p/little-blue-truck-p-c-by-alice-schertle-board-book/-/A-79856222" target="_blank" rel="noopener">Little Blue Truck (board book)</a></div>
+            </div>
+            <div class="wish" data-wish="mini-broom-dustpan">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0BMPNG9ST" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/mini-broom-dustpan.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0BMPNG9ST" target="_blank" rel="noopener">Mini broom &amp; dustpan set (light blue)</a></div>
+            </div>
+            <div class="wish" data-wish="duktig-decals-floral">
+              <a class="wish-pic" href="https://www.etsy.com/listing/1449260678/ikea-duktig-play-kitchen-in-70s-floral" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/duktig-decals-floral.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.etsy.com/listing/1449260678/ikea-duktig-play-kitchen-in-70s-floral" target="_blank" rel="noopener">DUKTIG kitchen decals, 70's floral (Etsy)</a></div>
+            </div>
+            <div class="wish" data-wish="zara-vet-case">
+              <a class="wish-pic" href="https://www.zarahome.com/us/kids-veterinarian-case-l44617052" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/zara-vet-case.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.zarahome.com/us/kids-veterinarian-case-l44617052" target="_blank" rel="noopener">Zara Home kids' veterinarian case</a></div>
+            </div>
+            <div class="wish" data-wish="vevor-sensory-table">
+              <a class="wish-pic" href="https://www.target.com/p/vevor-sensory-table-for-toddlers-kids-activity-table-with-3-foldable-storage-bins-paper-roll-holder-indoor-outdoor-play-sand-and-water-table/-/A-1003877936" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/vevor-sensory-table.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.target.com/p/vevor-sensory-table-for-toddlers-kids-activity-table-with-3-foldable-storage-bins-paper-roll-holder-indoor-outdoor-play-sand-and-water-table/-/A-1003877936" target="_blank" rel="noopener">VEVOR sand &amp; water sensory table</a></div>
+            </div>
+            <div class="wish" data-wish="yeti-rambler-jr">
+              <a class="wish-pic is-drawn" href="https://www.amazon.com/dp/B07VKBSB4P" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><svg viewBox="0 0 64 64" aria-hidden="true"><rect x="10" y="26" width="44" height="30" rx="3" fill="#fdf8f0" stroke="#1f5132" stroke-width="2.5"/><rect x="7" y="18" width="50" height="10" rx="2" fill="#c8102e" stroke="#1f5132" stroke-width="2.5"/><rect x="28" y="18" width="8" height="38" fill="#2e7d4f"/><path d="M32 18c-4-9-15-10-14-3 1 4 9 3 14 3zM32 18c4-9 15-10 14-3-1 4-9 3-14 3z" fill="#e0b23a" stroke="#1f5132" stroke-width="2"/></svg></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B07VKBSB4P" target="_blank" rel="noopener">YETI Rambler Jr. 12 oz kids' bottle (red)</a></div>
+            </div>
+            <div class="wish" data-wish="tappi-starter-set">
+              <a class="wish-pic" href="https://tappiplay.com/products/tappi-starter-set" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/tappi-starter-set.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://tappiplay.com/products/tappi-starter-set" target="_blank" rel="noopener">Tappi Starter Set (3 books + reading pen)</a></div>
+            </div>
+            <div class="wish" data-wish="watering-can">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B0H11QLDQH" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/watering-can.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B0H11QLDQH" target="_blank" rel="noopener">Small metal watering can (green)</a></div>
+            </div>
+            <div class="wish" data-wish="duktig-stickers-sage">
+              <a class="wish-pic" href="https://www.etsy.com/listing/4391253786/sage-green-duktig-kitchen-sticker-set" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/duktig-stickers-sage.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.etsy.com/listing/4391253786/sage-green-duktig-kitchen-sticker-set" target="_blank" rel="noopener">DUKTIG kitchen stickers, sage green (Etsy)</a></div>
+            </div>
+            <div class="wish" data-wish="mini-tongs">
+              <a class="wish-pic" href="https://www.amazon.com/dp/B08NJ798TX" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/mini-tongs.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.amazon.com/dp/B08NJ798TX" target="_blank" rel="noopener">Mini serving tongs (3 pack)</a></div>
+            </div>
+            <div class="wish" data-wish="toddla-switch-board">
+              <a class="wish-pic" href="https://www.toddla.co/products/toddla-montessori-switch-board" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true"><img src="images/wishes/toddla-switch-board.jpg" alt="" loading="lazy"></a>
+              <div class="wish-text"><a href="https://www.toddla.co/products/toddla-montessori-switch-board" target="_blank" rel="noopener">Toddla Montessori switch board</a></div>
+            </div>
           </div>
+        </div>
         </div>
       </div>
 
@@ -482,7 +607,7 @@
 const CLAIMS_API = "https://script.google.com/macros/s/AKfycbxdwDmcWBVRZTg6sfA-DoK8yqIsLhsa6dRejOW-V-MQ_f4zF-kP-vaTsqntoogfV8A/exec";
 
 (function () {
-  const items = Array.from(document.querySelectorAll('.ruled-line[data-wish]'));
+  const items = Array.from(document.querySelectorAll('[data-wish]'));
   const help = document.getElementById('claim-help');
   if (!CLAIMS_API || !items.length) return;
   help.hidden = false;
@@ -497,12 +622,15 @@ const CLAIMS_API = "https://script.google.com/macros/s/AKfycbxdwDmcWBVRZTg6sfA-D
   let openForm = null; // wish id with the name box open
 
   items.forEach(el => {
-    const text = document.createElement('span');
-    text.className = 'wish-text';
-    while (el.firstChild) text.appendChild(el.firstChild);
-    const area = document.createElement('span');
+    if (!el.querySelector('.wish-text')) {
+      const text = document.createElement('span');
+      text.className = 'wish-text';
+      while (el.firstChild) text.appendChild(el.firstChild);
+      el.append(text);
+    }
+    const area = document.createElement('div');
     area.className = 'claim-area';
-    el.append(text, area);
+    el.append(area);
   });
 
   function api(params) {
